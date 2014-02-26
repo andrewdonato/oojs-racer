@@ -102,10 +102,8 @@ var Game = function() {
     gameView.getPage().on("keyup", advanceRacer);
   }
 
-  return {
-    initialize: function() {
-      gameView.getPage().on("keyup", advanceRacer);
-      gameView.getPage().on("click", "input[name='reset']", resetGame);
-    }
+  this.initialize =  function() {
+    gameView.getPage().on("keyup", advanceRacer);
+    gameView.getPage().on("click", "input[name='reset']", resetGame);
   }
-}();
+}
