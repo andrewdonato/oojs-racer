@@ -28,6 +28,13 @@ var GameBoard = function(){
     // .children gives an array of children
     $(track.children()[player.getPosition()]).addClass("active");
   }
+  this.getFinishedPosition = function(player){
+    return $("#" + player.getName() + "_strip").children().length - 1;
+  }
+
+  this.reportWinner = function(player) {
+    $("#winner").append("<h1>" + player.getName() + " is the Winner! </h1>")
+  }
 }
 
 //  controller
@@ -43,10 +50,21 @@ var Game = function() {
     var player = players[event.keyCode];
     player.move();
     gameBoard.updatePlayerPosition(player);
+
+    if (gameBoard.getFinishedPosition(player) == player.getPosition(player)) {
+      gameBoard.reportWinner(player);
+      // as soon as someone gets to the end, show who won, disable keys and gameplay.
+      // switching keyup to keydown means the game still continues on even after a winner.
+      // unless they are both keydown
+      gameBoard.getBoard().off("keydown");
+    }
   }
 
+
   this.initialize = function() {
-    gameBoard.getBoard().on("keyup", advanceRacer);
+    // even using keydown here means the game does not end
+    // unless they are both keydown
+    gameBoard.getBoard().on("keydown", advanceRacer);
   }
 }
 
